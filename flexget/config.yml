@@ -1,0 +1,51 @@
+web_server:
+  bind: 0.0.0.0
+  port: 5050
+  web_ui: yes
+  #ssl_certificate: '/etc/letsencrypt/live/jvlomax.plus.com/fullchain.pem'
+  #ssl_private_key: '/etc/letsencrypt/live/jvlomax.plus.com/privkey.pem'
+tasks:
+  showrss:
+    rss: 
+      url: http://showrss.info/user/134320.rss?magnets=true&namespaces=true&name=null&quality=null&re=null
+      username: jvlomax
+      password: 88Futhark88
+    all_series: yes
+    thetvdb_lookup: yes
+    transmission:
+      host: 192.168.0.127
+      port: 9091
+      username: george
+      password: '12345'
+      ratio: 0.5
+      path: '/media/george/Series/Current Series/{{series_name}}/{{series_season}}'
+      main_file_only: yes
+      include_subs: yes
+      content_filename: "{{ series_name|replace(' ','.') }}.{{ series_id }}.{{ quality|upper }}{% if proper %}-proper{% endif %}"
+  get_imdb_watchlist:
+    imdb_watchlist:
+      user_id: ur45771307
+      list: watchlist
+    accept_all: yes
+    list_add:
+      - movie_list: imdb_movies
+  download-watchlists:
+    imdb_lookup: yes
+    discover:
+      what:
+        - movie_list: imdb_movies
+      from:
+        - piratebay: yes
+    seen_movies: loose 
+    list_match:
+      from:
+        - movie_list: movies
+    quality: 720p+
+    transmission:
+      host: localhost
+      port: 9091
+      ratio: 0.5
+      path: '/home/george/Videos/Movies/'
+      main_file_only: yes
+      include_subs: yes
+      
